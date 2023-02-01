@@ -86,11 +86,7 @@
         ],
 })
 
-    const sendEmail = () => {
-        if(!reg.test(form.email)) {
-            ElMessage.warning("请输入合法的邮箱")
-            return
-        }
+    const times = () => {
         //清空定时器
         if(interval.value >= 0) {
             clearInterval(interval.value)
@@ -101,6 +97,13 @@
                     time.value--
                 }
             }, 1000)
+    }
+
+    const sendEmail = () => {
+        if(!reg.test(form.email)) {
+            ElMessage.warning("请输入合法的邮箱")
+            return
+    }
         request.get("/email", { 
             params: {
                 email: form.email,
@@ -109,7 +112,9 @@
         }).then(res => {
             
             if(res.code == 200){
+                    
                     ElMessage.success('发送成功，有效期5分钟')
+                    times()
                 }else {
                     ElMessage.error(res.msg);
                 }
@@ -131,7 +136,7 @@
             }
         })
     }
-    console.log(store.user)
+    // console.log(store.user)
 </script>
 
 <style scoped>

@@ -44,12 +44,12 @@
 </template>
 
 <script setup>
-    import { reactive, ref } from "vue"
+    import { nextTick, reactive, ref } from "vue"
     import { User, Lock } from '@element-plus/icons-vue'
     import router from '@/router'
     import request from "@/utils/request"
     import { ElMessage } from "element-plus"
-    import { useUserStore } from "../stores/user"   // 导入
+    import { useUserStore } from "@/stores/user"   // 导入
     const ruleFormRef = ref()
     const passwordVis = ref(false)
     const rulePasswordFormRef = ref()
@@ -79,19 +79,20 @@ const passwordRules = reactive({
 
     const handleResetPassword = () => {
       passwordVis.value = true
-      if(rulePasswordFormRef) {
+      //触发表单重置
+      nextTick(() => {
         rulePasswordFormRef.value.resetFields()
-      }
+      })
     }
     const login = () => {
         ruleFormRef.value.validate(valid => {
             if(valid){
                 request.post("/login", form).then(res => {
-                console.log(res)
+                // console.log(res)
                 if(res.code == '200'){
                     
-                    store.$patch({user: res.data})
-                    
+                    // store.$patch({user: res.data})
+                    store.setLoginInfo(res.data)
                     ElMessage.success('登录成功')
                     router.push('/')
                 }else {
@@ -101,7 +102,7 @@ const passwordRules = reactive({
             }
         })
     }
-    const times = () => {
+const times = () => {
   // 清空定时器
   if (interval.value >= 0) {
     clearInterval(interval.value)
@@ -125,12 +126,12 @@ const passwordRules = reactive({
                 type: "RESETPASSWORD"
             }
         }).then(res => {
-            times()
-            if(res.code == '200'){
-                    ElMessage.success('发送成功，有效期5分钟')
-                }else {
-                    ElMessage.error(res.msg);
-                }
+            if(res.code === '200'){
+              times() //倒计时
+              ElMessage.success('发送成功，有效期5分钟')
+            }else {
+              ElMessage.error(res.msg);
+            }
         })
     }
 
@@ -138,7 +139,7 @@ const passwordRules = reactive({
         rulePasswordFormRef.value.validate(valid => {
             if(valid){
                 request.post("/password/reset", passwordForm).then(res => {
-                if(res.code == '200'){
+                if(res.code === '200'){
                     ElMessage.success('重置成功，您的密码为：' + res.data)
                     passwordVis.value = false
                 }else {
@@ -148,7 +149,7 @@ const passwordRules = reactive({
             }
         })
     }
-    console.log(store.user)
+    // console.log(store.user)
 </script>
 
 <style scoped>
