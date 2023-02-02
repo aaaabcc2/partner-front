@@ -23,18 +23,18 @@
             <div style="width: 200px; text-align: right; padding-right: 10px;">
                 <el-dropdown>
                     <div class="el-dropdown-link" style="line-height: 60px;">
-                        <el-avatar :size="40" :src="store.loginInfo.user.avatar" style="position:absolute; top:10px" />
-                        <span style="font-size: 14px; margin-left: 45px;">{{store.loginInfo.user.name}}</span>
+                        <el-avatar :size="40" :src="store.loginInfo.user.avatar" style="position:relative; top:10px" />
+                        <!-- <span style="font-size: 14px; margin-left: 45px;">{{store.loginInfo.user.name}}</span>
                         <el-icon class="el-icon--right" style="margin-left: 10px;">
                             <arrow-down />
-                        </el-icon>
+                        </el-icon> -->
                     </div>
                     <template #dropdown>
                       <el-dropdown-menu>
                         <el-dropdown-item>
-                            <div @click="router.push('/personCenter')">个人信息</div>
+                            <div @click="router.push('/personCenter')">个人中心</div>
                         </el-dropdown-item>
-                        <el-dropdown-item>修改密码</el-dropdown-item>
+                        <!-- <el-dropdown-item>修改密码</el-dropdown-item> -->
                         <el-dropdown-item>
                             <div @click="logout">退出登录</div>
                         </el-dropdown-item>
@@ -55,7 +55,7 @@
     // import { ref } from "vue"
     import { useUserStore } from "@/stores/user"   // 导入
     import router from '@/router'
-    import {ArrowDown} from '@element-plus/icons-vue'
+    // import {ArrowDown} from '@element-plus/icons-vue'
 
 
     const store = useUserStore()

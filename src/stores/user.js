@@ -28,8 +28,8 @@ actions: {
         this.loginInfo = loginInfo
     },
     setUser(user) {
-        // this.loginInfo.user = JSON.parse(JSON.stringify(user))
-        this.loginInfo.user = user
+        this.loginInfo.user = JSON.parse(JSON.stringify(user))
+        // this.loginInfo.user = user
     }
 },
 //数据持久化
